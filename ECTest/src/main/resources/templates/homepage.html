@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TopPage</title>
+    <meta charset="UTF-8">
+	<style>
+            .header1{
+                background-color: #fff;
+                padding: 10px;
+            }
+
+            .ul1{
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .ul1 li{
+                display: inline;
+                margin-right: 10px;
+            }
+
+            .ul1 li a{
+                color: #333;
+                text-decoration: none;
+            }
+
+            .ul1 li a:hover{
+                border-radius: 5px;
+                background-color: #333;
+                color: #fff;
+            }
+
+            .header2{
+                background-color: #f5f5f5;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .categoryButtons{
+                background-color: #fff;
+                list-style-type: none;
+                margin: 20px 20px;
+                padding: 0;
+            }
+
+            .button{
+                background-color: #fff;
+                display: inline-block;
+                margin-right: 20px;
+                border: none;
+            }
+
+            .button:hover{
+                border-radius: 5px;
+                background-color: #333;
+                color: #fff;
+            }
+
+            .product{
+                clear: both;
+                margin-top: 20px;
+                background-color: #fff;
+            }
+
+            .all-view__flex{
+                float: left;
+                width: 75%;
+                margin: auto;
+                border-bottom: 1px solid gray;;
+            }
+
+            .right-section{
+                float: right;
+                width: 25%;
+                margin: auto;
+                background-color: #f5f5f5;
+            }
+    </style>
+</head>
+
+<body>
+    <header class="header1">
+        <nav>
+            <ul class="ul1">
+                <li class="homepage" th:unless="${name != unll}"><a th:href="@{/homepage}">ホームページ</a></li>
+                <li class="login" th:unless="${name != null}"><a th:href="@{/login}">ユーザーログイン</a></li>
+                <li class="register" th:unless="${name != null}"><a th:href="@{/register}">ユーザー新規登録</a></li>
+                <li class="login" th:unless="${name != null}"><a th:href="@{/login}">管理者ログイン</a></li>
+                <li class="username"><a th:href="@{/infoEdit}">[[${name}]]</a></li>
+                <li class="logout" th:if="${name != null}"><a th:href="@{/homepage}">ログアウト</a></li>
+                <li class="card" th:if="${name != null}"><a th:href="@{/user/product/card}">ショッピングカート</a></li>
+                <li class="logout" th:if="${name != null}"><a th:href="@{/user/product/order}">オーダーセンター</a></li>
+                <li class="logout" th:if="${name != null}"><a th:href="@{/user/product/favorite}">お気に入り</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <header class="header2">
+        <div class="container">
+            <h1 class="h1">ようこそ ITtribe</h1>
+            <div id="categoryButtons" class="categoryButtons">
+                <button class="button" onclick="showAllBlogs()" type="button">一覧</button>
+                <button class="button" onclick="filterBlogs('Python')" type="button">Python</button>
+                <button class="button" onclick="filterBlogs('Java')" type="button">Java</button>
+                <button class="button" onclick="filterBlogs('C')" type="button">C</button>
+                <button class="button" onclick="filterBlogs('R')" type="button">R</button>
+                <button class="button" onclick="filterBlogs('Go')" type="button">Go</button>
+                <button class="button" onclick="filterBlogs('C++')" type="button">C++</button>
+                <button class="button" onclick="filterBlogs()" type="button">ほか</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="product">
+            <section class="all-view__flex" th:each="product:${productList}" th:data-category="${product.category}">
+                <table class="productlist">
+                    <tr>
+                        <td><br></td>
+                    </tr>
+                    <tr>
+                        <td th:text="「+${product.productTitle}+」" style="font-size: 20px;"></td>
+                        <td><br></td>
+                    </tr>
+                    <tr>
+                        <td th:text="${product.productAbstract}"></td>
+                        <td><br></td>                            
+                    </tr>
+                    <tr>
+                        <td style="color: grey;" th:text="商品ラベル：+ ${product.category} + '&nbsp;&nbsp;&nbsp;&nbsp;価格：'+ ${product.price} + '&nbsp;&nbsp;&nbsp;&nbsp;公開日時：'+ ${product.createTime}"></td>
+                    </tr>
+                </table>
+            </section>
+            
+            <section class="right-section">
+                <div class="ranking-list">
+                    <ol>
+                    <h3>ランキング</h3>
+                    <li>排名1</li>
+                    <li>排名2</li>
+                    <li>排名3</li>
+                    <li>排名4</li>
+                    <li>排名5</li>
+                    <li>排名5</li>
+                    <li>排名5</li>
+                    <li>排名5</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+            const h1 = document.querySelector('.h1');
+            h1.addEventListener('mouseover', function(){
+                this.style.transform = 'scale(1.02)';
+            });
+            h1.addEventListener('mouseout', function(){
+                this.style.transform = 'scale(1)';
+            });
+
+            const categoryButtons  = document.querySelector('.categoryButtons');
+            categoryButtons.addEventListener('mouseover', function(){
+                this.style.transform = 'scale(1.05)';
+            });
+            categoryButtons.addEventListener('mouseout', function(){
+                this.style.transform = 'scale(1)';
+            });
+
+            function filterBlogs(category) {
+                var blogs = document.getElementsByClassName("all-view__flex");
+                for (var i = 0; i < blogs.length; i++) {
+                    var blog = blogs[i];
+                    if(category){
+                        if (blog.getAttribute("data-category") === category){
+                            blog.style.display = "block";
+                        }else{
+                            blog.style.display = "none";
+                        }
+                    }else{
+                        var blogCategory = blog.getAttribute("data-category");
+                        if(
+                            blogCategory !== "Python" &&
+                            blogCategory !== "Java" &&
+                            blogCategory !== "C" &&
+                            blogCategory !== "R" &&
+                            blogCategory !== "Go" &&
+                            blogCategory !== "C++"
+                        ){
+                            blog.style.display = "block";
+                        }else{
+                            blog.style.display = "none";
+                        }
+                    }
+                }
+            }
+
+            function showAllBlogs() {
+                var blogs = document.getElementsByClassName("all-view__flex");
+                for (var i = 0; i < blogs.length; i++) {
+                    blogs[i].style.display = "block";
+                }
+            }
+    </script>
+</body>
+</html>

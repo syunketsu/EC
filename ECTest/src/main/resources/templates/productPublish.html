@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>productPublish</title>
+    <meta charset="utf-8">
+    <style>
+        body{
+            background-color: #fff;
+            padding: 40px;
+        }
+
+        .form{
+            background-color: aliceblue;
+            margin: auto;
+            width: 600px;
+            padding: 10px 20px;
+            border: ridge 3px;
+        }
+
+        .publish-button{
+            box-sizing: border-box;
+            width: 100%;
+            margin-top: 10px;
+            height: 35px;
+        }
+
+        .back-btn{
+            box-sizing: border-box;
+            width: 100%;
+            margin-top: 10px;
+            height: 35px;
+        }
+
+        .title{
+            text-align: center;
+        }
+
+        button:hover{
+            background-color: #333;
+            color: #fff;
+        }       
+    </style>
+</head>
+
+<body>
+    <div class="form">
+        <form th:action="@{/admin/product/publish}" method="post">
+            <h1 class="title">商品登録</h1>
+            <hr>
+            <br>
+            <div>
+                <label for="productTitle">商品名</label>
+                <br>
+                <textarea class="input1" id="productTitle" rows="1" cols="80" name="productTitle" ></textarea>
+            </div>
+            <br>
+            <div>
+                <label for="productAbstract">商品概要</label>
+                <br>
+                <textarea class="input2" id="productAbstract" rows="5" cols="80" name="productAbstract" ></textarea>
+            </div>
+            <br>
+            <div>
+                <label for="productDetail">商品詳細</label>
+                <br>
+                <textarea class="input3" id="productDetail" rows="15" cols="80" name="productDetail" ></textarea>
+            </div>
+            <br>
+            <div>
+                <label for="price">商品価格</label>
+                <br>
+                <textarea class="input4" id="price" rows="1" cols="80" name="price" ></textarea>
+            </div>
+            <br>
+            <div>
+                <label for="type">商品ラベル</label>
+                <br>
+                <div id="categoryButtons">
+                    <button class="button" onclick="displayCategory('Python')" type="button">Python</button>
+                    <button class="button" onclick="displayCategory('Java')" type="button">Java</button>
+                    <button class="button" onclick="displayCategory('C')" type="button">C</button>
+                    <button class="button" onclick="displayCategory('R')" type="button">R</button>
+                    <button class="button" onclick="displayCategory('Go')" type="button">Go</button>
+                    <button class="button" onclick="displayCategory('C++')" type="button">C++</button>
+                </div>
+            </div>
+            <br>
+            <div>
+                <label for="category">選択したラベル</label>
+                <br>
+                <textarea class="input5" id="category" rows="1" cols="80" name="category" ></textarea>
+            </div>
+            <br>
+            <input type="hidden" name="adminId" th:value="${adminId}">
+            <input type="hidden" name="adminName" th:value="${adminName}">
+            <input type="hidden" name="createTime" th:value="${createTime}">
+            <button class="publish-button">登録</button>
+            <button class="back-btn" onclick="history.back();" type="button">戻る</button>
+        </form>
+    </div>
+
+    <script>
+        function displayCategory(category){
+            var selectedCategoryElement = document.getElementById("category");
+            selectedCategoryElement.textContent = category;
+        }
+    </script>
+</body>
