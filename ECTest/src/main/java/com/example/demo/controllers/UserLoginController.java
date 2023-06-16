@@ -43,7 +43,7 @@ public class UserLoginController {
 	}
 	
 	@GetMapping("/loginerror")
-	public ModelAndView getUserErrorPage(Principal principal) {
+	public ModelAndView getUserErrorPage() {
 		ModelAndView mav = new ModelAndView("login.html");
 		mav.addObject("error", true);
 		return mav;
@@ -51,7 +51,6 @@ public class UserLoginController {
 	
 	@GetMapping("/page")
 	public String getPage() {
-		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    if (auth.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
 	        return "redirect:/admin/product/all"; // ADMIN角色跳转到/admin/product/all路径

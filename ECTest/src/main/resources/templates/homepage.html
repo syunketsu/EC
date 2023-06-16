@@ -72,7 +72,8 @@
 
             .right-section{
                 float: right;
-                width: 25%;
+                position:static;
+                width: 24%;
                 margin: auto;
                 background-color: #f5f5f5;
             }
@@ -84,14 +85,13 @@
         <nav>
             <ul class="ul1">
                 <li class="homepage" th:unless="${name != unll}"><a th:href="@{/homepage}">ホームページ</a></li>
-                <li class="login" th:unless="${name != null}"><a th:href="@{/login}">ユーザーログイン</a></li>
-                <li class="register" th:unless="${name != null}"><a th:href="@{/register}">ユーザー新規登録</a></li>
-                <li class="login" th:unless="${name != null}"><a th:href="@{/login}">管理者ログイン</a></li>
+                <li class="login" th:unless="${name != null}"><a th:href="@{/login}">ログイン</a></li>
+                <li class="register" th:unless="${name != null}"><a th:href="@{/register}">新規登録</a></li>
                 <li class="username"><a th:href="@{/infoEdit}">[[${name}]]</a></li>
                 <li class="logout" th:if="${name != null}"><a th:href="@{/homepage}">ログアウト</a></li>
                 <li class="card" th:if="${name != null}"><a th:href="@{/user/product/card}">ショッピングカート</a></li>
-                <li class="logout" th:if="${name != null}"><a th:href="@{/user/product/order}">オーダーセンター</a></li>
-                <li class="logout" th:if="${name != null}"><a th:href="@{/user/product/favorite}">お気に入り</a></li>
+                <li class="order" th:if="${name != null}"><a th:href="@{/user/product/order}">オーダーセンター</a></li>
+                <li class="like" th:if="${name != null}"><a th:href="@{/user/product/like}">お気に入り</a></li>
             </ul>
         </nav>
     </header>

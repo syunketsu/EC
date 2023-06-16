@@ -42,4 +42,8 @@ public class UserService {
 	public User selectById(String userName) {
 		return userRepository.findByUserName(userName);
 	} //在数据库中用用户名来寻找id
+	
+	public void update(Integer userId, String userName, String userPassword) {
+		userRepository.save(new User(userName, userPassword));
+	}
 }

@@ -11,7 +11,6 @@ import jakarta.transaction.Transactional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> { 
-	
 	//保存
 	Product save(Product product);
 

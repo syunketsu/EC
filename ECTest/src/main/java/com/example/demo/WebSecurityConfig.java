@@ -35,7 +35,7 @@ public class WebSecurityConfig{
 				.logoutSuccessUrl("/homepage")
 		).authorizeHttpRequests(authz -> authz
 				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-				.requestMatchers("/homepage","/login","/register").permitAll()
+				.requestMatchers("/homepage","/login","/register","/favicon.ico").permitAll()
                 .anyRequest().authenticated()
         );
 		return http.build();

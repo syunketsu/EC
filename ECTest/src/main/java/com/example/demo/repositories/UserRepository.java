@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.models.User;
 
-import jakarta.transaction.Transactional;
-
 @Repository
 public interface UserRepository extends JpaRepository<User,Integer>{
 	User save(User User);
@@ -16,8 +14,5 @@ public interface UserRepository extends JpaRepository<User,Integer>{
 	User findByUserName(String userName);
 	
 	List<User> findAll();
-	
-	@Transactional
-	List<User> deleteByUserName(String userName);
 }
 
