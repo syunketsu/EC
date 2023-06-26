@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -12,6 +13,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
 @NoArgsConstructor
@@ -32,6 +36,13 @@ public class User {
 	@NonNull
 	@Column(name="user_password")
 	private String userPassword;
+	
+    // 使用BCryptPasswordEncoder对密码进行加密
+	@PrePersist
+    public void prePersist() {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.userPassword = passwordEncoder.encode(this.userPassword);
+    }
 }
 
 

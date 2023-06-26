@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>userPay</title>
+  <meta charset="UTF-8">
+  <link rel="icon" href="data:,">
+  <style>
+    html {
+      height: 100vh;
+    }
+
+    body {
+      background-color: #fff;
+      padding: 40px;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .confirmation-container,
+    .payment-methods {
+      background-color: aliceblue;
+      width: 550px;
+      padding: 20px;
+      border: ridge 3px;
+    }
+
+    .title {
+      text-align: center;
+    }
+
+    .product-info {
+      margin-bottom: 20px;
+      margin-left: 20px;
+    }
+
+    .product-info label {
+      font-weight: bold;
+    }
+
+    .product-info span {
+      margin-left: 10px;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .button-container button {
+      margin-right: 20px;
+      padding: 10px 20px;
+      background-color: #99ccff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    .button-container button.return-button {
+      margin-right: 20px;
+    }
+
+    .button-container button:hover {
+      background-color: #66a3ff;
+    }
+
+    .success-container {
+      background-color: aliceblue;
+      width: 500px;
+      padding: 20px;
+      border: ridge 3px;
+    }
+
+    .success-image {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .success-image img {
+      width: 200px;
+    }
+
+    .success-container .title {
+      text-align: center;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .button-container button {
+      margin-right: 20px;
+      padding: 10px 20px;
+      background-color: #66a3ff;
+      border: none;
+      cursor: pointer;
+    }
+
+    .button-container button:hover {
+      background-color: #66a3ff;
+    }
+
+    table{
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    th, td{
+      text-align: center;
+      padding: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  
+  <div id="content">
+  
+    <div class="step-content" id="step-content1">
+      <div class="confirmation-container">
+        <h1 class="title">ご注文商品の確認</h1>
+        <hr>
+        <div class="product-info">
+          <table>
+            <thead>
+              <tr>
+                <th>講座名</th>
+                <th>単価</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td th:text="${product.productTitle}"></td>
+                <td th:text="${product.price}"></td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+          <!-- <div id="total-amount">合计金额: $0.00</div> -->
+        </div>
+        <div class="button-container">
+          <button class="confirm-button" onclick="goToStep(2)">確認</button>
+          <button class="return-button" onclick="history.back();" type="button">戻る</button>
+        </div>
+      </div>
+    </div>
+    <form th:action="@{/user/product/pay}" method="post">
+    <div class="step-content" id="step-content2">
+      <div class="confirmation-container">
+        <h1 class="title">ご注文内容の確認</h1>
+        <hr>
+        <div class="product-info">
+          <label>講座名:</label>
+          <span id="product-name" th:text="${product.productTitle}"></span>
+        </div>
+        <div class="product-info">
+          <label>単価:</label>
+          <span id="unit-price" th:text="${product.price}"></span>
+        </div>
+        <div class="product-info">
+          <label>数量:</label>
+          <span id="product-quantity">1</span>
+        </div>
+        <div class="product-info">
+          <label>合計金額:</label>
+          <span id="total-price" th:text="${product.price}"></span>
+          <input type="hidden" name="unitAmount" th:value="${product.price}">
+          <input type="hidden" name="productId" th:value="${product.productId}">
+          <input type="hidden" name="userId" th:value="${userId}">
+          <br>
+          <br>
+          <label>お支払方法:</label>
+          <br>
+          <input type="radio" name="paymentMethod" value="paypay"> PayPay
+          <br>
+          <input type="radio" name="paymentMethod" value="credit-card"> クレジットカード決済
+          <br>
+          <input type="radio" name="paymentMethod" value="convenience-store"> コンビニ後払い
+        </div>
+       
+
+        <div class="button-container">
+          <button class="confirm-button">支払う</button>
+          <button class="return-button" onclick="history.back();" type="button">戻る</button>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+
+  <script>
+    const stepContentElements = document.getElementsByClassName("step-content");
+
+    function goToStep(step) {
+      for (let i = 0; i < stepContentElements.length; i++) {
+        stepContentElements[i].style.display = "none";
+      }
+      document.getElementById(`step-content${step}`).style.display = "block";
+    }
+
+    function goToShoppingCart() {
+      window.location.href = "/shopping-cart"; // ショッピングカートページURL
+    }
+
+    function goToHomePage() {
+      window.location.href = "/"; // トップページURL
+    }
+
+    // 初始显示第一步
+    goToStep(1);
+  </script>
+</body>
+</html>

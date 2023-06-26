@@ -20,6 +20,8 @@ public class ProductService {
 		productRepository.save(new Product(productTitle, productAbstract, productDetail, price, category, createTime));
 	}
 	
+//	public 
+	
 	//プロダクト一覧
 	public List<Product> selectByAll(){
 		return productRepository.findAllByOrderByCreateTimeDesc();
@@ -33,11 +35,11 @@ public class ProductService {
 	//内容を更新
 	public void update(Integer productId, String productTitle, String productAbstract, String productDetail, String price, String category) {
 		Timestamp createTime = new Timestamp(System.currentTimeMillis());
-		productRepository.save(new Product(productTitle, productAbstract, productDetail, price, category, createTime));
+		productRepository.save(new Product(productId, productTitle, productAbstract, productDetail, price, category, createTime));
 	}
 	
-	//削除
-	public List<Product> deleteProduct(Integer productId){
-		return productRepository.deleteByProductId(productId);
-	}
+//	//削除
+//	public List<Product> deleteProduct(Integer productId){
+//		return productRepository.deleteByProductId(productId);
+//	}
 }

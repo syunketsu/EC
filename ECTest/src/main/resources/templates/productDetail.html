@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ProductDetail</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:,">
+    <style>
+            .header1{
+                background-color: #fff;
+                padding: 10px;
+            }
+
+            .ul1{
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .ul1 li{
+                display: inline;
+                margin-right: 10px;
+            }
+
+            .ul1 li a{
+                color: #333;
+                text-decoration: none;
+            }
+
+            .ul1 li a:hover{
+                border-radius: 5px;
+                background-color: #333;
+                color: #fff;
+            }
+
+            .header2{
+                background-color: #f5f5f5;
+                padding: 10px;
+                text-align: center;
+            }
+
+            table {
+            margin: 0 auto; 
+            }
+    </style>
+</head>
+
+<body>
+    <header class="header1">
+        <nav>
+            <ul class="ul1">
+                <li class="homepage" th:if="${name == unll}"><a th:href="@{/homepage}">ホームページ</a></li>
+                <li class="login" th:if="${name == null}"><a th:href="@{/login}">ログイン</a></li>
+                <li class="register" th:if="${name == null}"><a th:href="@{/register}">新規登録</a></li>
+                <li class="userhomepage" th:if="${name !='Admin'}"><a th:href="@{/userhomepage}">ホームページ</a></li>
+                <li class="username" th:if="${name !='Admin'}"><a th:href="@{/infoEdit}">[[${name}]]</a></li>
+                <li class="logout" th:if="${name !='Admin'}"><a th:href="@{/homepage}">ログアウト</a></li>
+                <li class="order" th:if="${name !='Admin'}"><a th:href="@{/user/product/order}">オーダーセンター</a></li>
+                <li class="study" th:if="${name !='Admin'}"><a th:href="@{/user/product/all}">マイ講座</a></li>
+                <li class="adminhomepage" th:if="${name =='Admin'}"><a th:href="@{/admin/product/all}">管理員ホームページ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <header class="header2">
+        <div class="container">
+            <h1 class="h1">ようこそ ITtribe</h1>
+        </div>
+    </header>
+
+    <main>
+        <div class="product" >
+            <table class="productDetail" style="border-bottom: 1px solid gray;width: 100%;">
+                <tr>
+                    <td><br></td>
+                </tr>
+                <tr>
+                    <td style="font-size: 20px;text-align: center;color: red;" th:text="${product.productTitle}"></td>
+                </tr>
+                <tr>
+                    <td><br></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;" th:text="${product.productAbstract}"></td>                         
+                </tr>
+                <tr>
+                    <td><br></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;" th:text="${product.productDetail}"></td>                           
+                </tr>
+                <tr>
+                    <td><br></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;color: grey;" th:text="商品ラベル：+ ${product.category} + '&nbsp;&nbsp;&nbsp;&nbsp;価格：'+ ${product.price} + '&nbsp;&nbsp;&nbsp;&nbsp;公開日時：'+ ${product.createTime}"></td>
+                </tr>
+                <tr>
+                    <td th:if="${name !='Admin' and not already}" style="text-align: right;"><a th:href="'/user/product/pay/'+${product.productId}"><button>注文</button></a></td>
+
+                    <td th:if="${name !='Admin' and already}" style="text-align: right;color: grey;">購入済</td>
+                    <td th:if="${name =='Admin'}" style="text-align: right;"><a th:href="'/admin/product/edit/'+${product.productId}"><button class="edit" id="edit">変更</button></a></td>              
+                </tr>
+            </table>
+        </div>
+    </main>
+
+    <script>
+            const h1 = document.querySelector('.h1');
+            h1.addEventListener('mouseover', function(){
+                this.style.transform = 'scale(1.02)';
+            });
+            h1.addEventListener('mouseout', function(){
+                this.style.transform = 'scale(1)';
+            });
+    </script>
+</body>
+</html>

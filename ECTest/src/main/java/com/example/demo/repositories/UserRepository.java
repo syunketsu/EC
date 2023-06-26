@@ -11,8 +11,10 @@ import com.example.demo.models.User;
 public interface UserRepository extends JpaRepository<User,Integer>{
 	User save(User User);
 	
-	User findByUserName(String userName);
+	User findByUserName(String userName);//根据用户名查找并返回一个完整的User实体对象
 	
 	List<User> findAll();
+	
+	User findByUserId(Integer userId);
 }
 

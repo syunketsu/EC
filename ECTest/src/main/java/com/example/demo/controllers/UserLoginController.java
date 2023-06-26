@@ -1,9 +1,11 @@
 package com.example.demo.controllers;
 
-import java.security.Principal;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -12,12 +14,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.models.Product;
+import com.example.demo.models.UserOrder;
 import com.example.demo.services.ProductService;
+import com.example.demo.services.UserOrderService;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 @Controller
 public class UserLoginController {
 	@Autowired
 	ProductService productService;
+	
+	@Autowired
+	UserOrderService userOrderService;
 	
 	@GetMapping("/login")
 	public String getLoginPage() {
@@ -28,17 +39,26 @@ public class UserLoginController {
 	public String getHomePage(Model model) {		
 		List<Product> productList = productService.selectByAll();
 		model.addAttribute("productList",productList);
+		
+		List<Object[]> productTitleAndCount = userOrderService.countOrder();
+        model.addAttribute("productTitleAndCount", productTitleAndCount);
+        
 		return "homepage.html";
 	}
 	
 	@GetMapping("/userhomepage")
-	public ModelAndView getUserHomePage(Principal principal) {
+	public ModelAndView getUserHomePage() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userName = auth.getName();
 		ModelAndView mav = new ModelAndView("homepage.html");
-		String userName = principal.getName();
 		mav.addObject("name", userName);
 		
 		List<Product> productList = productService.selectByAll();
 		mav.addObject("productList",productList);
+		
+		List<Object[]> productTitleAndCount = userOrderService.countOrder();
+        mav.addObject("productTitleAndCount", productTitleAndCount);
+		
 		return mav;
 	}
 	

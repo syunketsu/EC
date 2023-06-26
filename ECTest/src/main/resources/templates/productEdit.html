@@ -3,6 +3,7 @@
 <head>
     <title>productEdit</title>
     <meta charset="utf-8">
+    <link rel="icon" href="data:,">
     <style>
         body{
             background-color: #fff;
@@ -92,7 +93,6 @@
             </div>
             <br>
             <input type="hidden" name="productId" th:value="${product.productId}">
-            <input type="hidden" name="createTime" th:value="${createTime}">
             <button class="publish-button">変更</button>
             <button class="back-btn" onclick="history.back();" type="button">戻る</button>
         </form>

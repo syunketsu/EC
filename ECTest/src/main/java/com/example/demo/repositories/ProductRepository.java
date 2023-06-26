@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.models.Product;
 
-import jakarta.transaction.Transactional;
-
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> { 
 	//保存
@@ -20,7 +18,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	//プロダクトテーブルのすべての情報を取得
 	List<Product> findAllByOrderByCreateTimeDesc();
 
-	//productIdを取得して該当するブログ情報を削除する
-	@Transactional
-	List<Product> deleteByProductId(Integer productId);
+//	//productIdを取得して該当するブログ情報を削除する
+//	@Transactional
+//	List<Product> deleteByProductId(Integer productId);
 }

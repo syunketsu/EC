@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>TopPage</title>
+    <title>homepage</title>
     <meta charset="UTF-8">
+    <link rel="icon" href="data:,">
 	<style>
             .header1{
                 background-color: #fff;
@@ -67,7 +68,6 @@
                 float: left;
                 width: 75%;
                 margin: auto;
-                border-bottom: 1px solid gray;;
             }
 
             .right-section{
@@ -84,14 +84,13 @@
     <header class="header1">
         <nav>
             <ul class="ul1">
-                <li class="homepage" th:unless="${name != unll}"><a th:href="@{/homepage}">ホームページ</a></li>
-                <li class="login" th:unless="${name != null}"><a th:href="@{/login}">ログイン</a></li>
-                <li class="register" th:unless="${name != null}"><a th:href="@{/register}">新規登録</a></li>
+                <li class="homepage" th:if="${name == unll}"><a th:href="@{/homepage}">ホームページ</a></li>
+                <li class="login" th:if="${name == null}"><a th:href="@{/login}">ログイン</a></li>
+                <li class="register" th:if="${name == null}"><a th:href="@{/register}">新規登録</a></li>
                 <li class="username"><a th:href="@{/infoEdit}">[[${name}]]</a></li>
                 <li class="logout" th:if="${name != null}"><a th:href="@{/homepage}">ログアウト</a></li>
-                <li class="card" th:if="${name != null}"><a th:href="@{/user/product/card}">ショッピングカート</a></li>
                 <li class="order" th:if="${name != null}"><a th:href="@{/user/product/order}">オーダーセンター</a></li>
-                <li class="like" th:if="${name != null}"><a th:href="@{/user/product/like}">お気に入り</a></li>
+                <li class="study" th:if="${name != null}"><a th:href="@{/user/product/all}">マイ講座</a></li>
             </ul>
         </nav>
     </header>
@@ -114,40 +113,51 @@
 
     <main>
         <div class="product">
-            <section class="all-view__flex" th:each="product:${productList}" th:data-category="${product.category}">
-                <table class="productlist">
+            <div class="all-view__flex">
+                <table class="productlist" style="border-bottom: 1px solid gray;width: 100%;" th:each="product:${productList}" th:data-category="${product.category}">
                     <tr>
                         <td><br></td>
                     </tr>
                     <tr>
-                        <td th:text="「+${product.productTitle}+」" style="font-size: 20px;"></td>
+                        <td style="font-size: 20px;" th:unless="${name != null}"><a th:href="@{/login}" th:text="${product.productTitle}" style="text-decoration: none;color: red;"></a></td>
+                        <td style="font-size: 20px;" th:if="${name != null}"><a th:href="'/admin/product/detail/'+${product.productId}" th:text="${product.productTitle}" style="text-decoration: none;color: red;"></a></td>
+                    </tr>
+                    <tr>
                         <td><br></td>
                     </tr>
                     <tr>
-                        <td th:text="${product.productAbstract}"></td>
-                        <td><br></td>                            
+                        <td th:text="${product.productAbstract}"></td>                           
+                    </tr>
+                    <tr>
+                        <td><br></td>
                     </tr>
                     <tr>
                         <td style="color: grey;" th:text="商品ラベル：+ ${product.category} + '&nbsp;&nbsp;&nbsp;&nbsp;価格：'+ ${product.price} + '&nbsp;&nbsp;&nbsp;&nbsp;公開日時：'+ ${product.createTime}"></td>
                     </tr>
                 </table>
-            </section>
+            </div>
             
-            <section class="right-section">
+            <div class="right-section">
                 <div class="ranking-list">
-                    <ol>
-                    <h3>ランキング</h3>
-                    <li>排名1</li>
-                    <li>排名2</li>
-                    <li>排名3</li>
-                    <li>排名4</li>
-                    <li>排名5</li>
-                    <li>排名5</li>
-                    <li>排名5</li>
-                    <li>排名5</li>
-                    </ol>
+                    <h3>ランキング（注文量より）</h3>
+                    <table>
+                        <thead>
+                            <tr style="text-align: right;">
+                                <th>順位</th>
+                                <th>講座名</th>
+                                <th>注文量</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="productTitleAndCount:${productTitleAndCount}" style="text-align: right;">
+                                <td th:text="${productTitleAndCount[0]}"></td>
+                                <td th:text="'&nbsp;&nbsp;&nbsp;'+${productTitleAndCount[1]}"></td>
+                                <td th:text="'&nbsp;&nbsp;&nbsp;'+${productTitleAndCount[3]}"></td>
+                            </tr>
+                        </tbody>
+                    </table>  
                 </div>
-            </section>
+            </div>
         </div>
     </main>
 
@@ -169,7 +179,7 @@
             });
 
             function filterBlogs(category) {
-                var blogs = document.getElementsByClassName("all-view__flex");
+                var blogs = document.getElementsByClassName("productlist");
                 for (var i = 0; i < blogs.length; i++) {
                     var blog = blogs[i];
                     if(category){
@@ -197,7 +207,7 @@
             }
 
             function showAllBlogs() {
-                var blogs = document.getElementsByClassName("all-view__flex");
+                var blogs = document.getElementsByClassName("productlist");
                 for (var i = 0; i < blogs.length; i++) {
                     blogs[i].style.display = "block";
                 }

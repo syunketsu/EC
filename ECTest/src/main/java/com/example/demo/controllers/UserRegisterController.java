@@ -24,8 +24,7 @@ public class UserRegisterController {
 	}
 	
 	@PostMapping("/register")
-	public ModelAndView register(@RequestParam String userName,
-			@RequestParam String userPassword, ModelAndView mav) {
+	public ModelAndView register(@RequestParam String userName, @RequestParam String userPassword, ModelAndView mav) {
 		if (userService.createUser(userName, userPassword)) {
 			mav.addObject("error", false);
 			mav.setViewName("login.html");
@@ -39,15 +38,8 @@ public class UserRegisterController {
 	@GetMapping("/infoEdit")
 	public String getInfoUpdatePage(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
 		String userName = auth.getName();
-		
-		User user = userService.selectById(userName);
-		
-//		String userpassword = user.getUserPassword();
-//		
-//		Integer userid = user.getUserId();
-		
+		User user = userService.selectByUserName(userName);
 		model.addAttribute("user",user);
 		
 		return "userInfoEdit.html";

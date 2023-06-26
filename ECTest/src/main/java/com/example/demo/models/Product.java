@@ -50,10 +50,4 @@ public class Product {
 	@NonNull
 	@Column(name="create_time")
     private Timestamp createTime;
-	
-
-	private Integer likeCount;
-	
-
-	private Integer orderCount;
 }

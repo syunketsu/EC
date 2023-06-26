@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>productView</title>
+        <meta charset="UTF-8">
+        <link rel="icon" href="data:,">
+        <style>
+            .header1{
+                background-color: #fff;
+                padding: 10px;
+            }
+
+            .ul1{
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .ul1 li{
+                display: inline;
+                margin-right: 10px;
+            }
+
+            .ul1 li a{
+                color: #333;
+                text-decoration: none;
+            }
+
+            .ul1 li a:hover{
+                border-radius: 5px;
+                background-color: #333;
+                color: #fff;
+            }
+
+            .header2{
+                background-color: #f5f5f5;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .categoryButtons{
+                background-color: #fff;
+                list-style-type: none;
+                margin: 20px 20px;
+                padding: 0;
+            }
+
+            .button{
+                background-color: #fff;
+                display: inline-block;
+                margin-right: 20px;
+                border: none;
+            }
+
+            .button:hover{
+                border-radius: 5px;
+                background-color: #333;
+                color: #fff;
+            }
+
+            main{
+                display: flex;
+            }          
+            
+            .product{
+                flex: 3;
+                padding: 10px;
+                background-color: #fff;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="header1">
+            <nav>
+                <ul class="ul1">
+                    <li class="homepage"><a th:href="@{/userhomepage}">ホームページ</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <header class="header2">
+            <div class="container">
+                <h1 class="h1">ようこそ マイ講座 [[${name}]]</h1>
+                <div id="categoryButtons" class="categoryButtons">
+                    <button class="button" onclick="showAllBlogs()" type="button">一覧</button>
+                    <button class="button" onclick="filterBlogs('Python')" type="button">Python</button>
+                    <button class="button" onclick="filterBlogs('Java')" type="button">Java</button>
+                    <button class="button" onclick="filterBlogs('C')" type="button">C</button>
+                    <button class="button" onclick="filterBlogs('R')" type="button">R</button>
+                    <button class="button" onclick="filterBlogs('Go')" type="button">Go</button>
+                    <button class="button" onclick="filterBlogs('C++')" type="button">C++</button>
+                    <button class="button" onclick="filterBlogs()" type="button">ほか</button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="product">
+                <div class="all-view__flex" >
+                    <table class="productlist" style="border-bottom: 1px solid gray;width: 100%;" th:each="userOrder:${userOrderList}" th:data-category="${userOrder.product.category}">
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 20px;"><a th:href="'/admin/product/detail/'+${userOrder.product.productId}" th:text="${userOrder.product.productTitle}" style="text-decoration: none;color: red;"></a></td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td th:text="${userOrder.product.productAbstract}"></td>                      
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td style="color: grey;" th:text="商品ラベル：+ ${userOrder.product.category} + '&nbsp;&nbsp;&nbsp;&nbsp;価格：'+ ${userOrder.product.price} + '&nbsp;&nbsp;&nbsp;&nbsp;公開日時：'+ ${userOrder.product.createTime}"></td>
+                        </tr>
+                        <tr>
+                            <td><a th:href="@{/video1.mp4}"><button class="watch" id="watch">視聴</button></a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            const h1 = document.querySelector('.h1');
+            h1.addEventListener('mouseover', function(){
+                this.style.transform = 'scale(1.02)';
+            });
+            h1.addEventListener('mouseout', function(){
+                this.style.transform = 'scale(1)';
+            });
+
+            const categoryButtons  = document.querySelector('.categoryButtons');
+            categoryButtons.addEventListener('mouseover', function(){
+                this.style.transform = 'scale(1.05)';
+            });
+            categoryButtons.addEventListener('mouseout', function(){
+                this.style.transform = 'scale(1)';
+            });
+
+            function filterBlogs(category) {
+                var blogs = document.getElementsByClassName("productlist");
+                for (var i = 0; i < blogs.length; i++) {
+                    var blog = blogs[i];
+                    if(category){
+                        if (blog.getAttribute("data-category") === category){
+                            blog.style.display = "block";
+                        }else{
+                            blog.style.display = "none";
+                        }
+                    }else{
+                        var blogCategory = blog.getAttribute("data-category");
+                        if(
+                            blogCategory !== "Python" &&
+                            blogCategory !== "Java" &&
+                            blogCategory !== "C" &&
+                            blogCategory !== "R" &&
+                            blogCategory !== "Go" &&
+                            blogCategory !== "C++"
+                        ){
+                            blog.style.display = "block";
+                        }else{
+                            blog.style.display = "none";
+                        }
+                    }
+                }
+            }
+
+            function showAllBlogs() {
+                var blogs = document.getElementsByClassName("productlist");
+                for (var i = 0; i < blogs.length; i++) {
+                    blogs[i].style.display = "block";
+                }
+            }
+        </script>
+    </body>
+</html>

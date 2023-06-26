@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>userOrder</title>
+        <meta charset="UTF-8">
+        <link rel="icon" href="data:,">
+        <style>
+            .header1{
+                background-color: #fff;
+                padding: 10px;
+            }
+
+            .ul1{
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .ul1 li{
+                display: inline;
+                margin-right: 10px;
+            }
+
+            .ul1 li a{
+                color: #333;
+                text-decoration: none;
+            }
+
+            .ul1 li a:hover{
+                border-radius: 5px;
+                background-color: #333;
+                color: #fff;
+            }
+
+            .header2{
+                background-color: #f5f5f5;
+                padding: 10px;
+                text-align: center;
+            }
+
+            main{
+                display: flex;
+                justify-content: center;
+            }
+
+            table{
+                border-collapse: collapse;
+                width: 100%;
+                margin-top: 20px;
+            }
+
+            th, td{
+                text-align: center;
+                padding: 8px;
+            }
+
+            th{
+                cursor: pointer;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="header1">
+            <nav>
+                <ul class="ul1">
+                    <li class="homepage"><a th:href="@{/userhomepage}">ホームページ</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <header class="header2">
+            <div class="container">
+                <h1 class="h1">ようこそ オーダーセンター [[${name}]]</h1>
+            </div>
+        </header>
+
+        <main>
+            <div style="width: 100%;">
+            <table id="salesTable">
+                <thead>
+                  <tr>
+                    <th>講座名</th>
+                    <th>支払額</th>
+                    <th>購入時間</th>
+                    <th>購入方法</th>
+                  </tr>
+                </thead>
+                <tbody th:each="userOrder:${userOrderList}">
+                  <tr>
+                    <td th:text="${userOrder.product.productTitle}"></td>
+                    <td th:text="${userOrder.unitAmount}"></td>
+                    <td th:text="${userOrder.orderTime}"></td>
+                    <td th:text="${userOrder.paymentMethod}"></td>
+                  </tr>
+                </tbody>
+            </table>
+            </div>
+        </main>
+
+        <script>
+            const h1 = document.querySelector('.h1');
+            h1.addEventListener('mouseover', function(){
+                this.style.transform = 'scale(1.02)';
+            });
+            h1.addEventListener('mouseout', function(){
+                this.style.transform = 'scale(1)';
+            });
+        </script>
+    </script>
+    </body>
+</html>

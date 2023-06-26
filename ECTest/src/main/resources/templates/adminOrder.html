@@ -4,60 +4,68 @@
         <title>adminOrder</title>
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <meta charset="UTF-8">
+        <link rel="icon" href="data:,">
         <style>
-            .header1{
+            .header1 {
                 background-color: #fff;
                 padding: 10px;
             }
 
-            .ul1{
+            .ul1 {
                 list-style-type: none;
                 margin: 0;
                 padding: 0;
             }
 
-            .ul1 li{
+            .ul1 li {
                 display: inline;
                 margin-right: 10px;
             }
 
-            .ul1 li a{
+            .ul1 li a {
                 color: #333;
                 text-decoration: none;
             }
 
-            .ul1 li a:hover{
+            .ul1 li a:hover {
                 border-radius: 5px;
                 background-color: #333;
                 color: #fff;
             }
 
-            .header2{
+            .header2 {
                 background-color: #f5f5f5;
                 padding: 10px;
                 text-align: center;
             }
 
-            main{
+            main {
                 display: flex;
+                justify-content: center;
             }
 
-            table{
+            table {
                 border-collapse: collapse;
                 width: 100%;
             }
 
-            th, td{
+            th,
+            td {
                 text-align: center;
                 padding: 8px;
             }
 
-            th{
+            th {
                 cursor: pointer;
             }
 
             .charts-container {
                 display: flex;
+            }
+
+            .chart {
+                width: 350px;
+                height: 300px;
             }
         </style>
     </head>
@@ -73,278 +81,176 @@
 
         <header class="header2">
             <div class="container">
-                <h1 class="h1">ようこそ　オーダーセンター　管理者</h1>
+                <h1 class="h1">ようこそ オーダーセンター 管理者</h1>
             </div>
         </header>
 
         <div class="charts-container">
-            <div id="lineChart1"></div>
-            <div id="lineChart2"></div>
-            <div id="pieChart1"></div>
-            <div id="pieChart2"></div>
+            <div class="chart1" id="pieChart1"></div>
+            <div class="chart2" id="pieChart2"></div>
+            <div>
+            <h3 th:text="${currentTime}+'までの販売総額&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;'+${totalMoney}"></h3>                   
+            </div>
         </div>
 
         <main>
-            <table id="salesTable">
-                <thead>
-                  <tr>
-                    <th onclick="sortTable(0)">講座名</th>
-                    <th onclick="sortTable(1)">販売数量</th>
-                    <th onclick="sortTable(2)">販売金額</th>
-                    <th onclick="sortTable(3)">販売時間</th>
-                    <th onclick="sortTable(4)">購入者名</th>
-                    <th onclick="sortTable(5)">販売総数</th>
-                    <th onclick="sortTable(6)">販売総額</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>讲座1</td>
-                    <td>1</td>
-                    <td>100</td>
-                    <td>2023-09-01</td>
-                    <td>张三</td>
-                    <td>100</td>
-                    <td>200</td>
-                  </tr>
-                  <tr>
-                    <td>讲座2</td>
-                    <td>1</td>
-                    <td>50</td>
-                    <td>2023-08-01</td>
-                    <td>李四</td>
-                    <td>50</td>
-                    <td>500</td>
-                  </tr>
-                  <tr>
-                    <td>讲座3</td>
-                    <td>1</td>
-                    <td>70</td>
-                    <td>2023-03-01</td>
-                    <td>李四</td>
-                    <td>35</td>
-                    <td>800</td>
-                  </tr>
-                  <tr>
-                    <td>讲座3</td>
-                    <td>1</td>
-                    <td>70</td>
-                    <td>2023-03-01</td>
-                    <td>李</td>
-                    <td>35</td>
-                    <td>800</td>
-                  </tr>
-                  <tr>
-                    <td>讲座3</td>
-                    <td>1</td>
-                    <td>70</td>
-                    <td>2023-02-01</td>
-                    <td>四</td>
-                    <td>35</td>
-                    <td>800</td>
-                  </tr>
-                </tbody>
-            </table>
+            <div style="width: 100%;">
+                <table id="salesTable">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">講座名</th>
+                            <th onclick="sortTable(1)">販売数量</th>
+                            <th onclick="sortTable(2)">販売金額</th>
+                            <th onclick="sortTable(3)">販売時間</th>
+                            <th onclick="sortTable(4)">購入者名</th>
+                        </tr>
+                    </thead>
+                    <tbody th:each="userOrder:${userOrderList}">
+                        <tr>
+                            <td th:text="${userOrder.product.productTitle}"></td>
+                            <td>1</td>
+                            <td th:text="${userOrder.unitAmount}"></td>
+                            <td th:text="${userOrder.orderTime}"></td>
+                            <td th:text="${userOrder.user.userName}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </main>
 
         <script>
             const h1 = document.querySelector('.h1');
-            h1.addEventListener('mouseover', function(){
+            h1.addEventListener('mouseover', function () {
                 this.style.transform = 'scale(1.02)';
             });
-            h1.addEventListener('mouseout', function(){
+            h1.addEventListener('mouseout', function () {
                 this.style.transform = 'scale(1)';
             });
 
-            function sortTable(columnIndex){
+            function sortTable(columnIndex) {
                 var table, rows, switching, i, x, y, shouldSwitch;
                 table = document.getElementById("salesTable");
                 switching = true;
 
-                while (switching){
+                while (switching) {
                     switching = false;
                     rows = table.getElementsByTagName("tr");
 
-                    for (i = 1; i < (rows.length - 1); i++){
+                    for (i = 1; i < rows.length - 1; i++) {
                         shouldSwitch = false;
                         x = rows[i].getElementsByTagName("td")[columnIndex];
                         y = rows[i + 1].getElementsByTagName("td")[columnIndex];
-                        
-                        if (isNaN(x.innerHTML)){
-                            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()){
+
+                        if (isNaN(x.innerHTML)) {
+                            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
                                 shouldSwitch = true;
                                 break;
                             }
-                        }
-                        else{
-                            if (Number(x.innerHTML) < Number(y.innerHTML)){
+                        } else {
+                            if (Number(x.innerHTML) < Number(y.innerHTML)) {
                                 shouldSwitch = true;
                                 break;
                             }
                         }
                     }
 
-                    if (shouldSwitch){
+                    if (shouldSwitch) {
                         rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                         switching = true;
                     }
                 }
             }
 
-            // 饼图函数
-            function drawPieChart1(){
+            function calculatePieChartData1() {
                 var table = document.getElementById("salesTable");
                 var rows = table.getElementsByTagName("tr");
-                var data = [];
-                for (var i = 1; i < rows.length; i++){
-                    var cells = rows[i].getElementsByTagName("td");
-                    var label = cells[0].innerHTML;
-                    var value = parseInt(cells[5].innerHTML);
-                    data.push({ label: label, value: value });
-                }
-                var layout = {
-                    height: 300,
-                    width: 350,
-                    annotations: [
-                        {
-                            text: "販売総数",
-                            showarrow: false,
-                            font: {
-                                size: 14,
-                                color: 'black'
-                            },
-                            x: 0.5,
-                            y: -0.15,
-                            xref: 'paper',
-                            yref: 'paper'
-                        }
-                    ]
-                };
-                Plotly.newPlot('pieChart1', [{
-                    values: data.map(item => item.value),
-                    labels: data.map(item => item.label),
-                    type: 'pie'
-                }], layout);
-            }
+                var data = {};
 
-            // 饼图函数
-            function drawPieChart2(){
-                var table = document.getElementById("salesTable");
-                var rows = table.getElementsByTagName("tr");
-                var data = [];
-                for (var i = 1; i < rows.length; i++){
+                for (var i = 1; i < rows.length; i++) {
                     var cells = rows[i].getElementsByTagName("td");
-                    var label = cells[0].innerHTML;
-                    var value = parseInt(cells[6].innerHTML);
-                    data.push({ label: label, value: value });
-                }
-                var layout = {
-                    height: 300,
-                    width: 350,
-                    annotations: [
-                        {
-                            text: "販売総額",
-                            showarrow: false,
-                            font: {
-                                size: 14,
-                                color: 'black'
-                            },
-                            x: 0.5,
-                            y: -0.15,
-                            xref: 'paper',
-                            yref: 'paper'
-                        }
-                    ]
-                };
-                Plotly.newPlot('pieChart2', [{
-                    values: data.map(item => item.value),
-                    labels: data.map(item => item.label),
-                    type: 'pie'
-                }], layout);
-            }
+                    var lectureName = cells[0].innerHTML;
+                    var salesAmount = parseFloat(cells[2].innerHTML);
 
-            // 折线图函数
-            function drawLineChart1(){
-                var table = document.getElementById("salesTable");
-                var rows = table.getElementsByTagName("tr");
-                var data = [];
-                for (var i = 1; i < rows.length; i++){
-                    var cells = rows[i].getElementsByTagName("td");
-                    var label = cells[3].innerHTML;
-                    var value = parseInt(cells[1].innerHTML);
-
-                    if (data[label]){
-                        data[label] += value;
-                    }
-                    else{
-                        data[label] = value;
+                    if (data[lectureName]) {
+                        data[lectureName] += salesAmount;
+                    } else {
+                        data[lectureName] = salesAmount;
                     }
                 }
 
                 var labels = Object.keys(data);
                 var values = Object.values(data);
 
-                var layout = {
-                    height: 300,
-                    width: 350,
-                    xaxis: {
-                        title: '販売時間'
-                    },
-                    yaxis: {
-                        title: '販売数量'
-                    }
+                return {
+                    labels: labels,
+                    values: values
                 };
-                Plotly.newPlot('lineChart1', [{
-                    x: labels,
-                    y: values,
-                    type: 'scatter'
-                }], layout);
             }
 
-            // 折线图函数
-            function drawLineChart2(){
+            function drawPieChart1() {
+                var pieData = calculatePieChartData1();
+
+                var data = [{
+                    values: pieData.values,
+                    labels: pieData.labels,
+                    type: 'pie'
+                }];
+
+                var layout = {
+                    title: '講座より販売金額の分布',
+                    height: 300,
+                    width: 350
+                };
+
+                Plotly.newPlot('pieChart1', data, layout);
+            }
+
+            function calculatePieChartData2() {
                 var table = document.getElementById("salesTable");
                 var rows = table.getElementsByTagName("tr");
-                var data = [];
-                for (var i = 1; i < rows.length; i++){
-                    var cells = rows[i].getElementsByTagName("td");
-                    var label = cells[3].innerHTML;
-                    var value = parseInt(cells[2].innerHTML);
+                var data = {};
 
-                    if (data[label]){
-                        data[label] += value;
-                    }
-                    else{
-                        data[label] = value;
+                for (var i = 1; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName("td");
+                    var lectureName = cells[0].innerHTML;
+                    var salesAmount = parseFloat(cells[1].innerHTML);
+
+                    if (data[lectureName]) {
+                        data[lectureName] += salesAmount;
+                    } else {
+                        data[lectureName] = salesAmount;
                     }
                 }
 
                 var labels = Object.keys(data);
                 var values = Object.values(data);
 
-                var layout = {
-                    height: 300,
-                    width: 350,
-                    xaxis: {
-                        title: '販売時間'
-                    },
-                    yaxis: {
-                        title: '販売金額'
-                    }
+                return {
+                    labels: labels,
+                    values: values
                 };
-                Plotly.newPlot('lineChart2', [{
-                    x: labels,
-                    y: values,
-                    type: 'scatter'
-                }], layout);
             }
 
-            // 初始化页面时绘制饼图
+            function drawPieChart2() {
+                var pieData = calculatePieChartData2();
+
+                var data = [{
+                    values: pieData.values,
+                    labels: pieData.labels,
+                    type: 'pie'
+                }];
+
+                var layout = {
+                    title: '講座より販売数量の分布',
+                    height: 300,
+                    width: 350
+                };
+
+                Plotly.newPlot('pieChart2', data, layout);
+            }
+
             drawPieChart1();
             drawPieChart2();
-            drawLineChart1();
-            drawLineChart2();
         </script>
-    </script>
     </body>
 </html>

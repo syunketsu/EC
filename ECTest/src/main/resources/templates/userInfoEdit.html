@@ -3,6 +3,7 @@
 <head>
   <title>userInfoEdit</title>
   <meta charset="utf-8">
+  <link rel="icon" href="data:,">
   <style>
     body {
       background-color: #fff;
@@ -47,18 +48,6 @@
       <h1 class="title">個人情報の編集</h1>
       <hr>
       <div class="input-group">
-        <label for="current-password">現在のユーザー名</label>
-        <br>
-        <input name="currentPassword" id="current-password" th:value="${user.userName}">
-      </div>
-      <br>
-      <div class="input-group">
-        <label for="new-password">新しいユーザー名</label>
-        <br>
-        <input name="userName" id="new-password" placeholder="新しいパスワードを入力してください">
-      </div>
-      <br>
-      <div class="input-group">
         <label for="current-password">現在のパスワード</label>
         <br>
         <input type="password" name="currentPassword" id="current-password" th:value="${user.userPassword}">
@@ -67,10 +56,11 @@
       <div class="input-group">
         <label for="new-password">新しいパスワード</label>
         <br>
-        <input type="password" name="userPassword" id="new-password" placeholder="新しいパスワードを入力してください">
+        <input type="password" name="userPassword" id="new-password" placeholder="新しいパスワードを入力してください" required>
       </div>
       <br>
       <input type="hidden" name="userId" th:value="${user.userId}">
+      <input type="hidden" name="userName" th:value="${user.userName}">
       <button class="update-button">確認</button>
       <button class="back-btn" onclick="history.back();" type="button">戻る</button>
   </div>

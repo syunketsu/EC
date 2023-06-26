@@ -3,6 +3,7 @@
     <head>
         <title>productView</title>
         <meta charset="UTF-8">
+        <link rel="icon" href="data:,">
         <style>
             .header1{
                 background-color: #fff;
@@ -66,10 +67,6 @@
                 padding: 10px;
                 background-color: #fff;
             }
-
-            .all-view__flex{
-                border-bottom: 1px solid gray;;
-            }
         </style>
     </head>
 
@@ -86,7 +83,7 @@
 
         <header class="header2">
             <div class="container">
-                <h1 class="h1">お帰り　管理者</h1>
+                <h1 class="h1">お帰り 管理者</h1>
                 <div id="categoryButtons" class="categoryButtons">
                     <button class="button" onclick="showAllBlogs()" type="button">一覧</button>
                     <button class="button" onclick="filterBlogs('Python')" type="button">Python</button>
@@ -102,32 +99,25 @@
 
         <main>
             <div class="product">
-                <div class="all-view__flex" th:each="product:${productList}" th:data-category="${product.category}">
-                    <table class="productlist">
+                <div class="all-view__flex" >
+                    <table class="productlist" style="border-bottom: 1px solid gray;width: 100%;" th:each="product:${productList}" th:data-category="${product.category}">
                         <tr>
                             <td><br></td>
                         </tr>
                         <tr>
-                            <td th:text="「+${product.productTitle}+」" style="font-size: 20px;"></td>
+                            <td style="font-size: 20px;"><a th:href="'/admin/product/detail/'+${product.productId}" th:text="${product.productTitle}" style="text-decoration: none;color: red;"></a></td>
+                        </tr>
+                        <tr>
                             <td><br></td>
                         </tr>
                         <tr>
-                            <td th:text="${product.productAbstract}"></td>
-                            <td><br></td>                            
+                            <td th:text="${product.productAbstract}"></td>                      
                         </tr>
                         <tr>
-                            <td th:text="${product.productDetail}"></td>
-                            <td><br></td>                            
+                            <td><br></td>
                         </tr>
                         <tr>
                             <td style="color: grey;" th:text="商品ラベル：+ ${product.category} + '&nbsp;&nbsp;&nbsp;&nbsp;価格：'+ ${product.price} + '&nbsp;&nbsp;&nbsp;&nbsp;公開日時：'+ ${product.createTime}"></td>
-                        </tr>
-                        <tr>
-                            <td><a th:href="'/admin/product/edit/'+${product.productId}"><button class="edit" id="edit">変更</button></a>
-                            <form method="post" th:action="@{/admin/product/delete}" style="display: inline;">
-                                <input type="hidden" name="productId" th:value="${product.productId}">
-                                <button class="delete" id="delete">削除</button>
-                            </form>                      
                         </tr>
                     </table>
                 </div>
@@ -152,7 +142,7 @@
             });
 
             function filterBlogs(category) {
-                var blogs = document.getElementsByClassName("all-view__flex");
+                var blogs = document.getElementsByClassName("productlist");
                 for (var i = 0; i < blogs.length; i++) {
                     var blog = blogs[i];
                     if(category){
@@ -180,7 +170,7 @@
             }
 
             function showAllBlogs() {
-                var blogs = document.getElementsByClassName("all-view__flex");
+                var blogs = document.getElementsByClassName("productlist");
                 for (var i = 0; i < blogs.length; i++) {
                     blogs[i].style.display = "block";
                 }
