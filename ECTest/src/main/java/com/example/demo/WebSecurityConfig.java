@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -50,9 +52,10 @@ public class WebSecurityConfig{
 	public UserDetailsService userDetailsService() {
 		List<UserDetails> users = userService.getAllUsers().stream().map(
 				account -> User
-				.withDefaultPasswordEncoder()
+				.builder()
+//				.passwordEncoder(password -> new BCryptPasswordEncoder().encode(password))
 				.username(account.getUserName())
-				.password(account.getUserPassword())
+				.password("{bcrypt}"+account.getUserPassword())
 				.roles("USER")
 				.build()
 				).toList();
@@ -70,9 +73,9 @@ public class WebSecurityConfig{
 	
 	public static void addUser(String userName, String userPassword) {
 		manager.createUser(User
-				.withDefaultPasswordEncoder()
+				.builder()
 				.username(userName)
-				.password(userPassword)
+				.password("{bcrypt}"+userPassword)
 				.roles("USER")
 				.build());
 	}
