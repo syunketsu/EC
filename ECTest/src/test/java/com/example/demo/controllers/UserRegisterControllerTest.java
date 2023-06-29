@@ -57,6 +57,7 @@ public class UserRegisterControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("login.html"));
+
     }
 
     @Test
