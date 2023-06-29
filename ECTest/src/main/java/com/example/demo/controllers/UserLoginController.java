@@ -1,11 +1,8 @@
 package com.example.demo.controllers;
 
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,13 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.models.Product;
-import com.example.demo.models.UserOrder;
 import com.example.demo.services.ProductService;
 import com.example.demo.services.UserOrderService;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 @Controller
 public class UserLoginController {
